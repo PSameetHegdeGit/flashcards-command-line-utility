@@ -21,15 +21,19 @@ class CommandLineInterface:
             if cmd == "remove entry":
                 pass
             if cmd == "list entries":
-                pass
+                self.list_entries()
+            if cmd == "exit":
+                self.storage.close()
+                exit(0)
 
     def put_entry(self):
         word = input("Enter word: ")
         definition = input("Enter definition: ")
-        if input(f"would you like to register following? {word} : {definition} ") == "yes":
+        if input(f"would you like to register following? {word} : {definition}\n") == "yes":
             self.flashcards[word] = definition
+            self.storage.write(f'{word}:{definition}\n')
         else:
-            if input("would you like to reenter?") == "yes":
+            if input("would you like to reenter?: ") == "yes":
                 self.put_entry()
 
 

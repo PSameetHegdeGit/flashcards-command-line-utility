@@ -2,17 +2,29 @@ import os
 
 class Storage:
 
-    flashcards = None
-
     def __init__(self):
-        self.flashcards = self.init_storage()
 
-    def init_storage(self):
-        path = "../.Flashcards"
+        path = ".Flashcards"
+
+        # set current state
+        self.currentState = open(fr"{path}/current_state.txt")
+        print(self.currentState.read())
+
+        # set flash card store
         if not os.path.isdir(path):
             os.mkdir(path)
 
-        return open(r"../.Flashcards/flashcard_main.txt", "w+")
+        self.flashcardStore = open(fr"{path}/flashcard_main.txt", "w+")
+
+
+
+    #TODO: Refactor this
+    def write(self, entry):
+        self.flashcardStore.write(entry)
+
+    #TODO: Refactor this... pretty useless
+    def close(self):
+        self.flashcardStore.close()
 
 
 
