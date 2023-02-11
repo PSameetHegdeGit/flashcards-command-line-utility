@@ -1,5 +1,5 @@
 import unittest
-from CommandLineInterface import *
+from src.CommandLineInterface import *
 
 class TestMain(unittest.TestCase):
 

@@ -1,5 +1,4 @@
-from Storage import *
-from CommandLineInterface import *
+from src.CommandLineInterface import *
 
 if __name__ == "__main__":
     storageapi = Storage()
