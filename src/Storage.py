@@ -7,8 +7,14 @@ class Storage:
         path = ".Flashcards"
 
         # set current state
-        self.currentState = open(fr"{path}/current_state.txt")
-        print(self.currentState.read())
+        with open(fr"{path}/current_state.txt", "r+") as currentState:
+            if os.path.getsize(f"{path}/current_state.txt") == 0:
+                # indicates fresh flashcard store
+                currentState.write("current_file:None\n")
+
+        with open(fr"{path}/current_state.txt", "r") as currentState:
+            currentFile = currentState.read().split(':')
+            self.currentFile = {currentFile[0]:currentFile[1].strip()}
 
         # set flash card store
         if not os.path.isdir(path):
@@ -25,6 +31,7 @@ class Storage:
     #TODO: Refactor this... pretty useless
     def close(self):
         self.flashcardStore.close()
+
 
 
 
