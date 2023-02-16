@@ -1,36 +1,48 @@
 import os
 
-class Storage:
 
-    def __init__(self):
+directory = ".Flashcards"
+flashcards = []
 
-        path = ".Flashcards"
-
-        # set current state
-        with open(fr"{path}/current_state.txt", "r+") as currentState:
-            if os.path.getsize(f"{path}/current_state.txt") == 0:
-                # indicates fresh flashcard store
-                currentState.write("current_file:None\n")
-
-        with open(fr"{path}/current_state.txt", "r") as currentState:
-            currentFile = currentState.read().split(':')
-            self.currentFile = {currentFile[0]:currentFile[1].strip()}
-
-        # set flash card store
-        if not os.path.isdir(path):
-            os.mkdir(path)
-
-        self.flashcardStore = open(fr"{path}/flashcard_main.txt", "w+")
+def initialize_flashcard_store():
+    '''
+    Read current_state.txt for latest flashcard file ... Wait do I need this?
+    :return: IDK
+    '''
 
 
+    if not os.path.isdir(directory):
+        os.mkdir(directory)
 
-    #TODO: Refactor this
-    def write(self, entry):
-        self.flashcardStore.write(entry)
+    # set current state
+    with open(fr"{directory}/current_state.txt", "r+") as currentState:
+        if os.path.getsize(f"{directory}/current_state.txt") == 0:
+            # indicates fresh flashcard db
+            currentState.write("no_of_flashcards:0\n")
 
-    #TODO: Refactor this... pretty useless
-    def close(self):
-        self.flashcardStore.close()
+    with open(fr"{directory}/current_state.txt", "r") as currentState:
+        currentFile = currentState.read().split(':')
+        currentFile = {currentFile[0]: currentFile[1].strip()}
+
+    populate_flashcards(currentFile["no_of_flashcards"])
+
+
+def populate_flashcards(no_of_flashcards):
+
+    for i in no_of_flashcards:
+
+        with open(fr"{directory}/flashcardset_{}")
+    flashcards = self.flashcardStore.readlines()
+    fl = {}
+    for item in flashcards:
+        a, b = item.split(':')
+        fl[a] = b.strip()
+
+    return fl
+
+
+
+
 
 
 
