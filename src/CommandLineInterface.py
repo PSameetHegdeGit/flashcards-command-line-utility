@@ -2,6 +2,9 @@ from Storage import *
 
 
 def start():
+
+    initialize_flashcard_store()
+
     while True:
         print("What command would you like to run?")
         cmd = input()

@@ -9,11 +9,13 @@ def initialize_flashcard_store():
     :return: IDK
     '''
 
-
     if not os.path.isdir(directory):
         os.mkdir(directory)
 
-    # set current state
+    if not os.path.isfile(f"{directory}/current_state.txt"):
+        open(f"{directory}/current_state.txt", "x")
+
+    # set current state if nothing exists in current state
     with open(fr"{directory}/current_state.txt", "r+") as currentState:
         if os.path.getsize(f"{directory}/current_state.txt") == 0:
             # indicates fresh flashcard db
@@ -25,11 +27,10 @@ def initialize_flashcard_store():
 
     populate_flashcards(currentFile["no_of_flashcards"])
 
-
 def populate_flashcards(no_of_flashcards):
 
     for i in no_of_flashcards:
-        with open(fr"{directory}/flashcardset_{i}") as flashcard_ptr:
+        with open(fr"{directory}/flashcardset_{i}", 'r') as flashcard_ptr:
             flashcard_set = flashcard_ptr.readlines()
             fl = {}
             for flashcard in flashcard_set:
