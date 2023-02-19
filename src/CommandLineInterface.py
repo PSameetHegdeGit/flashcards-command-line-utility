@@ -24,6 +24,7 @@ def put_entry():
     definition = input("Enter definition: ")
     if input(f"would you like to register following? {word} : {definition}\n") == "yes":
         flashcard_set = sets_of_flashcards[-1]
+        print(flashcard_set)
         if len(flashcard_set) == 10:
             sets_of_flashcards.append(dict())
         sets_of_flashcards[-1][word] = [definition]

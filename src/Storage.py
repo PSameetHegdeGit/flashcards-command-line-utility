@@ -25,9 +25,9 @@ def initialize_flashcard_store():
         currentFile = currentState.read().split(':')
         currentFile = {currentFile[0]: currentFile[1].strip()}
 
-    populate_flashcards(currentFile["no_of_flashcards"])
+    populate_flashcards(int(currentFile["no_of_flashcards"]))
 
-def populate_flashcards(no_of_flashcards):
+def populate_flashcards(no_of_flashcards: int):
     '''
     reads all flashcard files from .Flashcards and initializes sets_of_flashcards (represented as an array of
     dictionaries) to those flashcards
@@ -36,7 +36,11 @@ def populate_flashcards(no_of_flashcards):
     :return: None
     '''
 
-    for i in no_of_flashcards:
+    for i in range(no_of_flashcards):
+
+        if not os.path.isfile(f"{directory}/flashcardset_{i}.txt"):
+            open(f"{directory}/flashcardset_{i}", "x")
+
         with open(fr"{directory}/flashcardset_{i}", 'r') as flashcard_ptr:
             flashcard_set = flashcard_ptr.readlines()
             fl = {}
