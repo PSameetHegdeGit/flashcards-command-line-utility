@@ -28,6 +28,13 @@ def initialize_flashcard_store():
     populate_flashcards(currentFile["no_of_flashcards"])
 
 def populate_flashcards(no_of_flashcards):
+    '''
+    reads all flashcard files from .Flashcards and initializes sets_of_flashcards (represented as an array of
+    dictionaries) to those flashcards
+
+    :param no_of_flashcards:
+    :return: None
+    '''
 
     for i in no_of_flashcards:
         with open(fr"{directory}/flashcardset_{i}", 'r') as flashcard_ptr:
@@ -40,6 +47,15 @@ def populate_flashcards(no_of_flashcards):
 
 
 def write_set_to_store(flashcard_set: dict, flashcard_idx: int):
+    '''
+    writes a flashcard set to its corresponding txt file under .Flashcards.
+    Flashcard sets are ordered by when created. Will always be in that order
+
+    :param flashcard_set: key value pairing corresponding to txt file
+    :param flashcard_idx: IDK
+    :return: None
+    '''
+
     with open(fr"{directory}/flashcardset_{flashcard_idx}", 'w') as set_ptr:
         for word, definition in flashcard_set.items():
             set_ptr.write(f"{word}:{definition}\n")
