@@ -45,7 +45,9 @@ def put_entry():
             put_entry()
 
 def list_entries():
-    print(sets_of_flashcards)
+    for flashcard_set in sets_of_flashcards:
+        for word, definition in flashcard_set.items():
+            print(f"{word} : {definition}")
 
 def check_if_entry_exists(word):
 
@@ -56,6 +58,18 @@ def check_if_entry_exists(word):
 
     return -1
 
+
+###############################
+
+# mode 10 per day
+
+def mode_10_per_day():
+    '''
+
+    :return: None
+    '''
+
+    while True:
 
 
 
