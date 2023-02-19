@@ -2,10 +2,11 @@ import os
 
 directory = ".Flashcards"
 sets_of_flashcards = []
+current_state = []
 
 def initialize_flashcard_store():
     '''
-    Read current_state.txt for latest flashcard file ... Wait do I need this?
+    Read current_state.txt for no_of_flashcards and counter
     :return: IDK
     '''
 
@@ -16,16 +17,19 @@ def initialize_flashcard_store():
         open(f"{directory}/current_state.txt", "x")
 
     # set current state if nothing exists in current state
-    with open(fr"{directory}/current_state.txt", "r+") as currentState:
+    with open(fr"{directory}/current_state.txt", "r+") as currentStatePtr:
         if os.path.getsize(f"{directory}/current_state.txt") == 0:
             # indicates fresh flashcard db
-            currentState.write("no_of_flashcards:0\n")
+            currentStatePtr.write("no_of_flashcards:0\n")
+            currentStatePtr.write("day:0")
 
-    with open(fr"{directory}/current_state.txt", "r") as currentState:
-        currentFile = currentState.read().split(':')
-        currentFile = {currentFile[0]: currentFile[1].strip()}
 
-    populate_flashcards(int(currentFile["no_of_flashcards"]))
+    with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
+        c = map(lambda x: x.split(':'),  currentStatePtr.readlines())
+        c = map(lambda x: {x[0]: x[1].strip()}, c)
+
+    current_state.extend(list(c))
+    populate_flashcards(int(current_state[0]["no_of_flashcards"]))
 
 def populate_flashcards(no_of_flashcards: int):
     '''
@@ -81,15 +85,21 @@ def append_entry_to_set(flashcard_idx: int, word: str, definition: str):
         set_ptr.write(f"{word}:{definition}\n")
 
 
+
 def update_current_state():
     '''
     Set number of flashcards in current_state.txt
 
     :return: None
     '''
+    current_state[0]['no_of_flashcards'] = len(sets_of_flashcards)
+
+    fl = current_state[0]
+    d = current_state[1]
 
     with open(f"{directory}/current_state.txt", 'w') as current_state_ptr:
-        current_state_ptr.write(f"no_of_flashcards:{len(sets_of_flashcards)}")
+        current_state_ptr.write(f"no_of_flashcards:{fl['no_of_flashcards']}")
+        current_state_ptr.write(f"day:{d['day']}")
 
 
 

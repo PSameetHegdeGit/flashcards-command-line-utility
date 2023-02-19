@@ -5,6 +5,10 @@ def start():
 
     initialize_flashcard_store()
 
+    if input("Would you like to enter 10 a day mode?\n") == "yes":
+        mode_10_per_day()
+        exit()
+
     while True:
         print("What command would you like to run?")
         cmd = input()
@@ -59,19 +63,53 @@ def check_if_entry_exists(word):
     return -1
 
 
+def review_set(flashcard_set):
+
+    for word, definition in flashcard_set.items():
+        print(f"{word}\n")
+        input("Press enter for definition")
+        print(f"{definition}\n")
+
+    print("\nreviewed set\n")
+
 ###############################
 
 # mode 10 per day
 
 def mode_10_per_day():
     '''
+    Enter 10 cards per day and review all cards based on day.
+    Counter refreshes every 5 days
 
     :return: None
     '''
 
-    while True:
+    print(current_state)
 
+    day = int(current_state[1]['day'])
+    place = day % 5
 
+    #check current_state.txt to see what day we are on
+    print("Enter words for set")
+    for _ in range(10):
+        put_entry()
+
+    if place == 0:
+        review_set(sets_of_flashcards[-1])
+    elif place == 1:
+        for i in range(-2, 0):
+            review_set(sets_of_flashcards[i])
+    elif place == 2:
+        for i in range(-3, 0):
+            review_set(sets_of_flashcards[i])
+    elif place == 3:
+        for i in range(-4, 0):
+            review_set(sets_of_flashcards[i])
+    elif place == 4:
+        for i in range(-5, 0):
+            review_set(sets_of_flashcards[i])
+
+    print("completed today's session. See you tomorrow!\n")
 
 
 
