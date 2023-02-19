@@ -1,7 +1,7 @@
 import os
 
 directory = ".Flashcards"
-sets_of_flashcards = [dict()]
+sets_of_flashcards = []
 
 def initialize_flashcard_store():
     '''
@@ -35,19 +35,21 @@ def populate_flashcards(no_of_flashcards: int):
     :param no_of_flashcards:
     :return: None
     '''
+    if no_of_flashcards == 0:
+        sets_of_flashcards.append(dict())
+    else:
+        for i in range(no_of_flashcards):
 
-    for i in range(no_of_flashcards):
+            if not os.path.isfile(f"{directory}/flashcardset_{i}"):
+                open(f"{directory}/flashcardset_{i}", "x")
 
-        if not os.path.isfile(f"{directory}/flashcardset_{i}.txt"):
-            open(f"{directory}/flashcardset_{i}", "x")
-
-        with open(fr"{directory}/flashcardset_{i}", 'r') as flashcard_ptr:
-            flashcard_set = flashcard_ptr.readlines()
-            fl = {}
-            for flashcard in flashcard_set:
-                a, b = flashcard.split(':')
-                fl[a] = b.strip()
-            sets_of_flashcards.append(fl)
+            with open(fr"{directory}/flashcardset_{i}", 'r') as flashcard_ptr:
+                flashcard_set = flashcard_ptr.readlines()
+                fl = {}
+                for flashcard in flashcard_set:
+                    a, b = flashcard.split(':')
+                    fl[a] = b.strip()
+                sets_of_flashcards.append(fl)
 
 
 def write_set_to_store(flashcard_set: dict, flashcard_idx: int):
@@ -65,8 +67,29 @@ def write_set_to_store(flashcard_set: dict, flashcard_idx: int):
             set_ptr.write(f"{word}:{definition}\n")
 
 
+def append_entry_to_set(flashcard_idx: int, word: str, definition: str):
+    '''
+    append entry to the file corresponding to a flashcard set
+
+    :param flashcard_idx: set position
+    :param word
+    :param definition
+    :return: None
+    '''
+
+    with open(fr"{directory}/flashcardset_{flashcard_idx}", 'a') as set_ptr:
+        set_ptr.write(f"{word}:{definition}\n")
 
 
+def update_current_state():
+    '''
+    Set number of flashcards in current_state.txt
+
+    :return: None
+    '''
+
+    with open(f"{directory}/current_state.txt", 'w') as current_state_ptr:
+        current_state_ptr.write(f"no_of_flashcards:{len(sets_of_flashcards)}")
 
 
 

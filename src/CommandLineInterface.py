@@ -22,13 +22,24 @@ def start():
 def put_entry():
     word = input("Enter word: ")
     definition = input("Enter definition: ")
+
     if input(f"would you like to register following? {word} : {definition}\n") == "yes":
-        flashcard_set = sets_of_flashcards[-1]
-        print(flashcard_set)
-        if len(flashcard_set) == 10:
-            sets_of_flashcards.append(dict())
-        sets_of_flashcards[-1][word] = [definition]
-        write_set_to_store(sets_of_flashcards[-1], len(sets_of_flashcards) - 1)
+
+        setIdxOfSetToAddIn = check_if_entry_exists(word)
+        flashcard_set = sets_of_flashcards[setIdxOfSetToAddIn]
+
+        if setIdxOfSetToAddIn != -1:
+            flashcard_set[word] = definition
+            write_set_to_store(flashcard_set, setIdxOfSetToAddIn)
+
+        else:
+            if len(flashcard_set) == 10:
+                sets_of_flashcards.append(dict())
+                update_current_state()
+
+            sets_of_flashcards[-1][word] = definition
+            append_entry_to_set(len(sets_of_flashcards) - 1, word, definition)
+
     else:
         if input("would you like to reenter?: ") == "yes":
             put_entry()
@@ -36,6 +47,14 @@ def put_entry():
 def list_entries():
     print(sets_of_flashcards)
 
+def check_if_entry_exists(word):
+
+    for idx, flashcard_set in enumerate(sets_of_flashcards):
+
+        if word in flashcard_set:
+            return idx
+
+    return -1
 
 
 
