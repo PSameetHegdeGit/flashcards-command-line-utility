@@ -97,14 +97,21 @@ def update_current_state():
     fl = current_state[0]
     d = current_state[1]
 
+    print(fl + " " + d)
     with open(f"{directory}/current_state.txt", 'w') as current_state_ptr:
         current_state_ptr.write(f"no_of_flashcards:{fl['no_of_flashcards']}")
         current_state_ptr.write(f"day:{d['day']}")
 
 
 
+def exit_flashcard_app():
+    current_state[0]['no_of_flashcards'] = len(sets_of_flashcards)
 
+    fl = current_state[0]
+    d = current_state[1]
 
-
+    with open(f"{directory}/current_state.txt", 'w') as current_state_ptr:
+        current_state_ptr.write(f"no_of_flashcards:{fl['no_of_flashcards']}")
+        current_state_ptr.write(f"day:{d['day']}")
 
 

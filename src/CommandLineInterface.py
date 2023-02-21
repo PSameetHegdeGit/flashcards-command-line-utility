@@ -1,11 +1,13 @@
 from Storage import *
 
 
+default_mode = "10_per_day"
+
 def start():
 
     initialize_flashcard_store()
 
-    if input("Would you like to enter 10 a day mode?\n") == "yes":
+    if default_mode == "10_per_day":
         mode_10_per_day()
         exit()
 
@@ -48,6 +50,7 @@ def put_entry():
         if input("would you like to reenter?: ") == "yes":
             put_entry()
 
+
 def list_entries():
     for flashcard_set in sets_of_flashcards:
         for word, definition in flashcard_set.items():
@@ -72,9 +75,8 @@ def review_set(flashcard_set):
 
     print("\nreviewed set\n")
 
-###############################
+### MODES ###
 
-# mode 10 per day
 
 def mode_10_per_day():
     '''
