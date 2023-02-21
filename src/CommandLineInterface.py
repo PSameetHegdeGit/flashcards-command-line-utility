@@ -66,7 +66,7 @@ def check_if_entry_exists(word):
 def review_set(flashcard_set):
 
     for word, definition in flashcard_set.items():
-        print(f"{word}\n")
+        print(f"{word}")
         input("Press enter for definition")
         print(f"{definition}\n")
 
