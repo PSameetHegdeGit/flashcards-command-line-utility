@@ -109,7 +109,14 @@ def update_current_state(flashcardContext: FlashcardContext):
 
 def exit_flashcard_app(flashcardContext: FlashcardContext):
 
-    update_current_state(flashcardContext)
+    noOfFlashcards = len(flashcardContext.setsOfFlashcards)
+    day = flashcardContext.day + 1
+
+    print(noOfFlashcards, day)
+    with open(f"{flashcardContext.directory}/current_state.txt", 'w') as current_state_ptr:
+        current_state_ptr.write(f"no_of_flashcards:{noOfFlashcards}\n")
+        current_state_ptr.write(f"day:{day}")
+
     exit()
 
 

@@ -9,7 +9,7 @@ def start():
 
     if default_mode == "10_per_day":
         mode_10_per_day(flashcardContext)
-        exit()
+        exit_flashcard_app(flashcardContext)
 
     while True:
         print("What command would you like to run?")
@@ -34,20 +34,20 @@ def put_entry(flashcardContext: FlashcardContext):
 
     if input(f"would you like to register following? {word} : {definition}\n") == "yes":
 
-        setIdxOfSetToAddIn = check_if_entry_exists(word)
+        setIdxOfSetToAddIn = check_if_entry_exists(flashcardContext, word)
         flashcard_set = sets_of_flashcards[setIdxOfSetToAddIn]
 
         if setIdxOfSetToAddIn != -1:
             flashcard_set[word] = definition
-            write_set_to_store(flashcard_set, setIdxOfSetToAddIn)
+            write_set_to_store(flashcardContext, flashcard_set, setIdxOfSetToAddIn)
 
         else:
             if len(flashcard_set) == 10:
                 sets_of_flashcards.append(dict())
-                update_current_state()
+                update_current_state(flashcardContext)
 
             sets_of_flashcards[-1][word] = definition
-            append_entry_to_set(len(sets_of_flashcards) - 1, word, definition)
+            append_entry_to_set(flashcardContext, len(sets_of_flashcards) - 1, word, definition)
 
     else:
         if input("would you like to reenter?: ") == "yes":
