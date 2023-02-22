@@ -5,10 +5,10 @@ default_mode = "10_per_day"
 
 def start():
 
-    initialize_flashcard_store()
+    flashcardContext = FlashcardContext()
 
     if default_mode == "10_per_day":
-        mode_10_per_day()
+        mode_10_per_day(flashcardContext)
         exit()
 
     while True:
@@ -17,15 +17,18 @@ def start():
         if cmd == "help":
             print("list of available commands: put entry, remove entry, list entries")
         if cmd == "put entry":
-            put_entry()
+            put_entry(flashcardContext)
         if cmd == "remove entry":
             pass
         if cmd == "list entries":
-            list_entries()
+            list_entries(flashcardContext)
         if cmd == "exit":
             exit(0)
 
-def put_entry():
+def put_entry(flashcardContext: FlashcardContext):
+
+    sets_of_flashcards = flashcardContext.setsOfFlashcards
+
     word = input("Enter word: ")
     definition = input("Enter definition: ")
 
@@ -51,15 +54,19 @@ def put_entry():
             put_entry()
 
 
-def list_entries():
+def list_entries(flashcardContext: FlashcardContext):
+
+    sets_of_flashcards = flashcardContext.setsOfFlashcards
+
     for flashcard_set in sets_of_flashcards:
         for word, definition in flashcard_set.items():
             print(f"{word} : {definition}")
 
-def check_if_entry_exists(word):
+def check_if_entry_exists(flashcardContext: FlashcardContext, word: str):
+
+    sets_of_flashcards = flashcardContext.setsOfFlashcards
 
     for idx, flashcard_set in enumerate(sets_of_flashcards):
-
         if word in flashcard_set:
             return idx
 
@@ -78,7 +85,7 @@ def review_set(flashcard_set):
 ### MODES ###
 
 
-def mode_10_per_day():
+def mode_10_per_day(flashcardContext: FlashcardContext):
     '''
     Enter 10 cards per day and review all cards based on day.
     Counter refreshes every 5 days
@@ -86,15 +93,14 @@ def mode_10_per_day():
     :return: None
     '''
 
-    print(current_state)
-
-    day = int(current_state[1]['day'])
+    day = flashcardContext.day
+    sets_of_flashcards = flashcardContext.setsOfFlashcards
     place = day % 5
 
     #check current_state.txt to see what day we are on
     print("Enter words for set")
     for _ in range(10):
-        put_entry()
+        put_entry(flashcardContext)
 
     if place == 0:
         review_set(sets_of_flashcards[-1])

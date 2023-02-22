@@ -1,77 +1,84 @@
 import os
 
-directory = ".Flashcards"
-sets_of_flashcards = []
-current_state = []
 
-def initialize_flashcard_store():
-    '''
-    Read current_state.txt for no_of_flashcards and counter
-    :return: IDK
-    '''
-
-    if not os.path.isdir(directory):
-        os.mkdir(directory)
-
-    if not os.path.isfile(f"{directory}/current_state.txt"):
-        open(f"{directory}/current_state.txt", "x")
-
-    # set current state if nothing exists in current state
-    with open(fr"{directory}/current_state.txt", "r+") as currentStatePtr:
-        if os.path.getsize(f"{directory}/current_state.txt") == 0:
-            # indicates fresh flashcard db
-            currentStatePtr.write("no_of_flashcards:0\n")
-            currentStatePtr.write("day:0")
+class FlashcardContext:
 
 
-    with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
-        c = map(lambda x: x.split(':'),  currentStatePtr.readlines())
-        c = map(lambda x: {x[0]: x[1].strip()}, c)
+    def __init__(self, directory='.Flashcards'):
+        '''
+        Read current_state.txt for no_of_flashcards and counter
+        :return: IDK
+        '''
 
-    current_state.extend(list(c))
-    populate_flashcards(int(current_state[0]["no_of_flashcards"]))
+        self.directory = directory
 
-def populate_flashcards(no_of_flashcards: int):
-    '''
-    reads all flashcard files from .Flashcards and initializes sets_of_flashcards (represented as an array of
-    dictionaries) to those flashcards
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
 
-    :param no_of_flashcards:
-    :return: None
-    '''
-    if no_of_flashcards == 0:
-        sets_of_flashcards.append(dict())
-    else:
-        for i in range(no_of_flashcards):
+        if not os.path.isfile(f"{directory}/current_state.txt"):
+            open(f"{directory}/current_state.txt", "x")
 
-            if not os.path.isfile(f"{directory}/flashcardset_{i}"):
-                open(f"{directory}/flashcardset_{i}", "x")
-
-            with open(fr"{directory}/flashcardset_{i}", 'r') as flashcard_ptr:
-                flashcard_set = flashcard_ptr.readlines()
-                fl = {}
-                for flashcard in flashcard_set:
-                    a, b = flashcard.split(':')
-                    fl[a] = b.strip()
-                sets_of_flashcards.append(fl)
+        # set current state if nothing exists in current state
+        with open(fr"{directory}/current_state.txt", "r+") as currentStatePtr:
+            if os.path.getsize(f"{directory}/current_state.txt") == 0:
+                # indicates fresh flashcard db
+                currentStatePtr.write("no_of_flashcards:0\n")
+                currentStatePtr.write("day:0")
 
 
-def write_set_to_store(flashcard_set: dict, flashcard_idx: int):
+        with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
+            current_state = map(lambda x: x.split(':'),  currentStatePtr.readlines())
+            current_state = list(map(lambda x: {x[0]: x[1].strip()}, current_state))
+            self.noOfFlashcards = int(current_state[0]['no_of_flashcards'])
+            self.day = int(current_state[1]['day'])
+
+        self.setsOfFlashcards = self.populate_flashcards(self.noOfFlashcards)
+
+    def populate_flashcards(self, no_of_flashcards: int):
+        '''
+        reads all flashcard files from .Flashcards and initializes sets_of_flashcards (represented as an array of
+        dictionaries) to those flashcards
+
+        :param no_of_flashcards:
+        :return: a list of the sets of flashcards
+        '''
+
+        sets_of_flashcards = []
+
+        if no_of_flashcards == 0:
+            sets_of_flashcards.append(dict())
+        else:
+            for i in range(no_of_flashcards):
+
+                if not os.path.isfile(f"{self.directory}/flashcardset_{i}"):
+                    open(f"{self.directory}/flashcardset_{i}", "x")
+
+                with open(fr"{self.directory}/flashcardset_{i}", 'r') as flashcard_ptr:
+                    flashcard_set = flashcard_ptr.readlines()
+                    fl = {}
+                    for flashcard in flashcard_set:
+                        a, b = flashcard.split(':')
+                        fl[a] = b.strip()
+                    sets_of_flashcards.append(fl)
+
+        return sets_of_flashcards
+
+def write_set_to_store(flashcardContext: FlashcardContext, flashcardSet: dict, flashcardIdx: int):
     '''
     writes a flashcard set to its corresponding txt file under .Flashcards.
     Flashcard sets are ordered by when created. Will always be in that order
 
-    :param flashcard_set: key value pairing corresponding to txt file
+    :param flashcardSet: key value pairing corresponding to txt file
     :param flashcard_idx: IDK
     :return: None
     '''
 
-    with open(fr"{directory}/flashcardset_{flashcard_idx}", 'w') as set_ptr:
-        for word, definition in flashcard_set.items():
+    with open(fr"{flashcardContext.directory}/flashcardset_{flashcardIdx}", 'w') as set_ptr:
+        for word, definition in flashcardSet.items():
             set_ptr.write(f"{word}:{definition}\n")
 
 
-def append_entry_to_set(flashcard_idx: int, word: str, definition: str):
+def append_entry_to_set(flashcardContext: FlashcardContext, flashcardIdx: int, word: str, definition: str):
     '''
     append entry to the file corresponding to a flashcard set
 
@@ -81,37 +88,28 @@ def append_entry_to_set(flashcard_idx: int, word: str, definition: str):
     :return: None
     '''
 
-    with open(fr"{directory}/flashcardset_{flashcard_idx}", 'a') as set_ptr:
+    with open(fr"{flashcardContext.directory}/flashcardset_{flashcardIdx}", 'a') as set_ptr:
         set_ptr.write(f"{word}:{definition}\n")
 
 
-
-def update_current_state():
+def update_current_state(flashcardContext: FlashcardContext):
     '''
-    Set number of flashcards in current_state.txt
+    Updates current_state.txt
 
     :return: None
     '''
-    current_state[0]['no_of_flashcards'] = len(sets_of_flashcards)
 
-    fl = current_state[0]
-    d = current_state[1]
+    noOfFlashcards = len(flashcardContext.setsOfFlashcards)
+    day = flashcardContext.day
 
-    print(fl + " " + d)
-    with open(f"{directory}/current_state.txt", 'w') as current_state_ptr:
-        current_state_ptr.write(f"no_of_flashcards:{fl['no_of_flashcards']}")
-        current_state_ptr.write(f"day:{d['day']}")
+    with open(f"{flashcardContext.directory}/current_state.txt", 'w') as current_state_ptr:
+        current_state_ptr.write(f"no_of_flashcards:{noOfFlashcards}")
+        current_state_ptr.write(f"day:{day}")
 
 
+def exit_flashcard_app(flashcardContext: FlashcardContext):
 
-def exit_flashcard_app():
-    current_state[0]['no_of_flashcards'] = len(sets_of_flashcards)
-
-    fl = current_state[0]
-    d = current_state[1]
-
-    with open(f"{directory}/current_state.txt", 'w') as current_state_ptr:
-        current_state_ptr.write(f"no_of_flashcards:{fl['no_of_flashcards']}")
-        current_state_ptr.write(f"day:{d['day']}")
+    update_current_state(flashcardContext)
+    exit()
 
 
