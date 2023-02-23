@@ -40,6 +40,7 @@ def put_entry(flashcardContext: FlashcardContext):
         if setIdxOfSetToAddIn != -1:
             flashcard_set[word] = definition
             write_set_to_store(flashcardContext, flashcard_set, setIdxOfSetToAddIn)
+            return "existing entry"
 
         else:
             if len(flashcard_set) == 10:
@@ -48,10 +49,11 @@ def put_entry(flashcardContext: FlashcardContext):
 
             sets_of_flashcards[-1][word] = definition
             append_entry_to_set(flashcardContext, len(sets_of_flashcards) - 1, word, definition)
+            return "new entry"
 
     else:
         if input("would you like to reenter?: ") == "yes":
-            put_entry()
+            put_entry(flashcardContext)
 
 
 def list_entries(flashcardContext: FlashcardContext):
@@ -97,25 +99,34 @@ def mode_10_per_day(flashcardContext: FlashcardContext):
     sets_of_flashcards = flashcardContext.setsOfFlashcards
     place = day % 5
 
-    #check current_state.txt to see what day we are on
+    # check current_state.txt to see what day we are on
     print("Enter words for set")
-    for _ in range(10):
-        put_entry(flashcardContext)
+    new_entry_ctr = 0
+    while new_entry_ctr < 10:
+        #must be 10 new entries
+        if put_entry(flashcardContext) == "new entry":
+            new_entry_ctr += 1
 
-    if place == 0:
-        review_set(sets_of_flashcards[-1])
-    elif place == 1:
-        for i in range(-2, 0):
-            review_set(sets_of_flashcards[i])
-    elif place == 2:
-        for i in range(-3, 0):
-            review_set(sets_of_flashcards[i])
-    elif place == 3:
-        for i in range(-4, 0):
-            review_set(sets_of_flashcards[i])
-    elif place == 4:
-        for i in range(-5, 0):
-            review_set(sets_of_flashcards[i])
+    print(flashcardContext.setsOfFlashcards)
+
+    try:
+        if place == 0:
+            review_set(sets_of_flashcards[-1])
+        elif place == 1:
+            for i in range(-2, 0):
+                review_set(sets_of_flashcards[i])
+        elif place == 2:
+            for i in range(-3, 0):
+                review_set(sets_of_flashcards[i])
+        elif place == 3:
+            for i in range(-4, 0):
+                review_set(sets_of_flashcards[i])
+        elif place == 4:
+            for i in range(-5, 0):
+                review_set(sets_of_flashcards[i])
+    except IndexError:
+        # Ignore idx error
+        pass
 
     print("completed today's session. See you tomorrow!\n")
 
