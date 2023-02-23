@@ -1,5 +1,5 @@
 from Storage import *
-
+import random
 
 default_mode = "10_per_day"
 
@@ -7,8 +7,15 @@ def start():
 
     flashcardContext = FlashcardContext()
 
+    if input("would you like a quiz?\n") == "yes":
+        quiz(flashcardContext, 10)
+
     if default_mode == "10_per_day":
         mode_10_per_day(flashcardContext)
+
+        if input("would you like a quiz?") == "yes":
+            quiz(flashcardContext, 10)
+
         exit_flashcard_app(flashcardContext)
 
     while True:
@@ -84,6 +91,7 @@ def review_set(flashcard_set):
 
     print("\nreviewed set\n")
 
+
 ### MODES ###
 
 
@@ -131,4 +139,13 @@ def mode_10_per_day(flashcardContext: FlashcardContext):
     print("completed today's session. See you tomorrow!\n")
 
 
+def quiz(flashcardContext, noOfProblems):
+
+    setsOfFlashcards = flashcardContext.setsOfFlashcards
+    flashcardSet = setsOfFlashcards[random.randint(0, len(setsOfFlashcards) - 1)]
+
+    for _ in range(noOfProblems):
+        flashcard = random.choice(list(flashcardSet))
+        input(f"what is the definition of: {flashcard}. Press Enter for answer")
+        print(flashcardSet[flashcard])
 
