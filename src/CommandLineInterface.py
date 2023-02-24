@@ -8,7 +8,7 @@ def start():
     flashcardContext = FlashcardContext()
 
     if input("would you like a quiz?\n") == "yes":
-        quiz(flashcardContext, 10)
+        quiz(flashcardContext, 30)
 
     if default_mode == "10_per_day":
         mode_10_per_day(flashcardContext)
@@ -141,11 +141,12 @@ def mode_10_per_day(flashcardContext: FlashcardContext):
 
 def quiz(flashcardContext, noOfProblems):
 
-    setsOfFlashcards = flashcardContext.setsOfFlashcards
-    flashcardSet = setsOfFlashcards[random.randint(0, len(setsOfFlashcards) - 1)]
+    for _ in range(noOfProblems/5):
+        setsOfFlashcards = flashcardContext.setsOfFlashcards
+        flashcardSet = setsOfFlashcards[random.randint(0, len(setsOfFlashcards) - 1)]
 
-    for _ in range(noOfProblems):
-        flashcard = random.choice(list(flashcardSet))
-        input(f"what is the definition of: {flashcard}. Press Enter for answer")
-        print(flashcardSet[flashcard])
+        for _ in range(noOfProblems/5):
+            flashcard = random.choice(list(flashcardSet))
+            input(f"what is the definition of: {flashcard}. Press Enter for answer")
+            print(flashcardSet[flashcard])
 
