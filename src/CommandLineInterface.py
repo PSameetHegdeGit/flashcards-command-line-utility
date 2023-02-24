@@ -12,10 +12,6 @@ def start():
 
     if default_mode == "10_per_day":
         mode_10_per_day(flashcardContext)
-
-        if input("would you like a quiz?") == "yes":
-            quiz(flashcardContext, 10)
-
         exit_flashcard_app(flashcardContext)
 
     while True:
@@ -33,7 +29,12 @@ def start():
             exit(0)
 
 def put_entry(flashcardContext: FlashcardContext):
+    '''
+    Add or update entry in sets of flashcards
 
+    :param flashcardContext: flashcard config values
+    :return: "existing entry" on update, "new entry" on add, and "no entry" if neither updating nor adding
+    '''
     sets_of_flashcards = flashcardContext.setsOfFlashcards
 
     word = input("Enter word: ")
@@ -61,6 +62,8 @@ def put_entry(flashcardContext: FlashcardContext):
     else:
         if input("would you like to reenter?: ") == "yes":
             put_entry(flashcardContext)
+
+    return "no entry"
 
 
 def list_entries(flashcardContext: FlashcardContext):
