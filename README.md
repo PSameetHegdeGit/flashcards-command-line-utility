@@ -15,7 +15,7 @@ app supports importing pdf and csv files. You can also quiz yourself on the flas
 
 ## Technical Details
 
-TODO
+TODO + 1
 
 
 
