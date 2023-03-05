@@ -17,4 +17,5 @@ TODO 2/21/22
 (6) Track progress and adapt (i.e if I miss 2 days, ask for 20 vocab words then up till 30)
 (7) add CSV parser and PDF Parser?
 (8) Enable adding DB of potential words to select from, and auto generate words  
+aef
 '''
