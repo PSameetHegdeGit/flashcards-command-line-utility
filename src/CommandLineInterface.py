@@ -28,42 +28,53 @@ def start():
         if cmd == "exit":
             exit(0)
 
-def put_entry(flashcardContext: FlashcardContext):
+def put_entry(flashcardContext: FlashcardContext ):
     '''
     Add or update entry in sets of flashcards
 
     :param flashcardContext: flashcard config values
     :return: "existing entry" on update, "new entry" on add, and "no entry" if neither updating nor adding
     '''
-    sets_of_flashcards = flashcardContext.setsOfFlashcards
 
     word = input("Enter word: ")
     definition = input("Enter definition: ")
 
     if input(f"would you like to register following? {word} : {definition}\n") == "yes":
-
-        setIdxOfSetToAddIn = check_if_entry_exists(flashcardContext, word)
-        flashcard_set = sets_of_flashcards[setIdxOfSetToAddIn]
-
-        if setIdxOfSetToAddIn != -1:
-            flashcard_set[word] = definition
-            write_set_to_store(flashcardContext, flashcard_set, setIdxOfSetToAddIn)
-            return "existing entry"
-
-        else:
-            if len(flashcard_set) == 10:
-                sets_of_flashcards.append(dict())
-                update_current_state(flashcardContext)
-
-            sets_of_flashcards[-1][word] = definition
-            append_entry_to_set(flashcardContext, len(sets_of_flashcards) - 1, word, definition)
-            return "new entry"
+        put_entry(flashcardContext, word, definition)
 
     else:
         if input("would you like to reenter?: ") == "yes":
             put_entry(flashcardContext)
 
     return "no entry"
+
+
+def put_entry(flashcardContext: FlashcardContext, word: str, definition: str):
+    '''
+    Add or update entry in FlashcardContext.sets_of_flashcards
+
+    :return: None
+    '''
+
+    setsOfFlashcards = flashcardContext.setsOfFlashcards
+    setIdxOfSetToAddIn = find_set_idx_of_entry(flashcardContext, word)
+    flashcard_set = setsOfFlashcards[setIdxOfSetToAddIn]
+
+    if setIdxOfSetToAddIn != -1:
+        flashcard_set[word] = definition
+        write_set_to_store(flashcardContext, flashcard_set, setIdxOfSetToAddIn)
+        return "existing entry"
+
+    else:
+        if len(flashcard_set) == 10:
+            setsOfFlashcards.append(dict())
+            update_current_state(flashcardContext)
+
+        setsOfFlashcards[-1][word] = definition
+        append_entry_to_set(flashcardContext, len(setsOfFlashcards) - 1, word, definition)
+        return "new entry"
+
+
 
 
 def list_entries(flashcardContext: FlashcardContext):
@@ -74,7 +85,12 @@ def list_entries(flashcardContext: FlashcardContext):
         for word, definition in flashcard_set.items():
             print(f"{word} : {definition}")
 
-def check_if_entry_exists(flashcardContext: FlashcardContext, word: str):
+def find_set_idx_of_entry(flashcardContext: FlashcardContext, word: str):
+    '''
+    Finds the idx of set in FlashcardContext.sets_of_flashcards that word exists in
+
+    :return: set idx if word exists; -1 if does not exist
+    '''
 
     sets_of_flashcards = flashcardContext.setsOfFlashcards
 

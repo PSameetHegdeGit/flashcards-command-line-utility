@@ -6,37 +6,42 @@ class FlashcardContext:
 
     def __init__(self, directory='.Flashcards'):
         '''
-        Read current_state.txt for no_of_flashcards and counter
+        Read current_state.txt for no_of_flashcards and counter; set directory to '' to get empty context
         :return: IDK
         '''
 
-        self.directory = directory
+        if directory == '':
+            self.noOfFlashcards = 0
+            self.setsOfFlashcards = [dict()]
+        else:
 
-        if not os.path.isdir(directory):
-            os.mkdir(directory)
+            self.directory = directory
 
-        if not os.path.isfile(f"{directory}/current_state.txt"):
-            open(f"{directory}/current_state.txt", "x")
+            if not os.path.isdir(directory):
+                os.mkdir(directory)
 
-        # set current state if nothing exists in current state
-        with open(fr"{directory}/current_state.txt", "r+") as currentStatePtr:
-            if os.path.getsize(f"{directory}/current_state.txt") == 0:
-                # indicates fresh flashcard db
-                currentStatePtr.write("no_of_flashcards:0\n")
-                currentStatePtr.write("day:0")
+            if not os.path.isfile(f"{directory}/current_state.txt"):
+                open(f"{directory}/current_state.txt", "x")
+
+            # set current state if nothing exists in current state
+            with open(fr"{directory}/current_state.txt", "r+") as currentStatePtr:
+                if os.path.getsize(f"{directory}/current_state.txt") == 0:
+                    # indicates fresh flashcard db
+                    currentStatePtr.write("no_of_flashcards:0\n")
+                    currentStatePtr.write("day:0")
 
 
-        with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
-            current_state = map(lambda x: x.split(':'),  currentStatePtr.readlines())
-            current_state = list(map(lambda x: {x[0]: x[1].strip()}, current_state))
-            self.noOfFlashcards = int(current_state[0]['no_of_flashcards'])
-            self.day = int(current_state[1]['day'])
+            with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
+                current_state = map(lambda x: x.split(':'),  currentStatePtr.readlines())
+                current_state = list(map(lambda x: {x[0]: x[1].strip()}, current_state))
+                self.noOfFlashcards = int(current_state[0]['no_of_flashcards'])
+                self.day = int(current_state[1]['day'])
 
-        self.setsOfFlashcards = self.populate_flashcards(self.noOfFlashcards)
+            self.setsOfFlashcards = self.populate_flashcards(self.noOfFlashcards)
 
     def populate_flashcards(self, no_of_flashcards: int):
         '''
-        reads all flashcard files from .Flashcards and initializes sets_of_flashcards (represented as an array of
+        reads all flashcard files when a valid directory is specified (i.e. not '') and initializes sets_of_flashcards (represented as an array of
         dictionaries) to those flashcards
 
         :param no_of_flashcards:
