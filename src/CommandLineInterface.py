@@ -1,7 +1,15 @@
 from Storage import *
 import random
 
+
+'''
+File lists functions that interact with command line and any helper functions associated with those functions  
+'''
+
+
+
 default_mode = "10_per_day"
+
 
 def start():
 
@@ -28,7 +36,7 @@ def start():
         if cmd == "exit":
             exit(0)
 
-def put_entry(flashcardContext: FlashcardContext ):
+def get_entry_from_input_stream(flashcardContext: FlashcardContext):
     '''
     Add or update entry in sets of flashcards
 
