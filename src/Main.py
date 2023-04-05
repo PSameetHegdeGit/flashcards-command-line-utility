@@ -14,7 +14,9 @@ TODO 2/21/22
 (3) beautify console output
 (4) Add dictonary API or create dictionary fxnality for word 
 (5) Build Python Executable 
-(6) Track progress and adapt (i.e if I miss 2 days, ask for 20 vocab words then up till 30)
-(7) add CSV parser and PDF Parser?
-(8) Enable adding DB of potential words to select from, and auto generate words  
+(6) Add Python Executable to PATH to call from command line 
+(7) Track progress and adapt (i.e if I miss 2 days, ask for 20 vocab words then up till 30)
+(8) add CSV parser and PDF Parser?
+(9) Enable adding DB of potential words to select from, and auto generate words  
+(10) put .Flashcards config under ~/
 '''

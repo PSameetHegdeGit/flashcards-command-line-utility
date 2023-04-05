@@ -6,8 +6,6 @@ import random
 File lists functions that interact with command line and any helper functions associated with those functions  
 '''
 
-
-
 default_mode = "10_per_day"
 
 
