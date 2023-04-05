@@ -10,7 +10,7 @@ File lists functions and classes that interact with storage
 class FlashcardContext:
 
 
-    def __init__(self, directory='.Flashcards'):
+    def __init__(self, directory='/Users/rajee/.Flashcards'):
         '''
         Read current_state.txt for no_of_flashcards and counter; set directory to '' to get empty context
         :return: IDK

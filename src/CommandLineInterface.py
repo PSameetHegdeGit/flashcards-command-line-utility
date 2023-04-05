@@ -13,8 +13,8 @@ def start():
 
     flashcardContext = FlashcardContext()
 
-    if input("would you like a quiz?\n") == "yes":
-        quiz(flashcardContext, 30)
+    # if input("would you like a quiz?\n") == "yes":
+    #     quiz(flashcardContext, 30)
 
     if default_mode == "10_per_day":
         mode_10_per_day(flashcardContext)
@@ -39,20 +39,20 @@ def get_entry_from_input_stream(flashcardContext: FlashcardContext):
     Add or update entry in sets of flashcards
 
     :param flashcardContext: flashcard config values
-    :return: "existing entry" on update, "new entry" on add, and "no entry" if neither updating nor adding
+    :return: 0 on update, 1 on add, and -1 if failed to add or update
     '''
 
     word = input("Enter word: ")
     definition = input("Enter definition: ")
 
     if input(f"would you like to register following? {word} : {definition}\n") == "yes":
-        put_entry(flashcardContext, word, definition)
+        return put_entry(flashcardContext, word, definition)
 
     else:
         if input("would you like to reenter?: ") == "yes":
-            put_entry(flashcardContext)
+            get_entry_from_input_stream(flashcardContext)
 
-    return "no entry"
+    return 2
 
 
 def put_entry(flashcardContext: FlashcardContext, word: str, definition: str):
@@ -69,7 +69,7 @@ def put_entry(flashcardContext: FlashcardContext, word: str, definition: str):
     if setIdxOfSetToAddIn != -1:
         flashcard_set[word] = definition
         write_set_to_store(flashcardContext, flashcard_set, setIdxOfSetToAddIn)
-        return "existing entry"
+        return 0
 
     else:
         if len(flashcard_set) == 10:
@@ -78,7 +78,7 @@ def put_entry(flashcardContext: FlashcardContext, word: str, definition: str):
 
         setsOfFlashcards[-1][word] = definition
         append_entry_to_set(flashcardContext, len(setsOfFlashcards) - 1, word, definition)
-        return "new entry"
+        return 1
 
 
 
@@ -137,7 +137,7 @@ def mode_10_per_day(flashcardContext: FlashcardContext):
     new_entry_ctr = 0
     while new_entry_ctr < 10:
         #must be 10 new entries
-        if put_entry(flashcardContext) == "new entry":
+        if get_entry_from_input_stream(flashcardContext) == 1:
             new_entry_ctr += 1
 
     print(flashcardContext.setsOfFlashcards)
