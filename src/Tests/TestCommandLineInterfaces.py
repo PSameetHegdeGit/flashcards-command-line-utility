@@ -1,9 +1,13 @@
 import unittest
 from src.CommandLineInterface import *
 
-class TestMain(unittest.TestCase):
+class TestCommandLineInterfaces(unittest.TestCase):
 
-    def test_init_storage(self):
+
+    def setup(self):
+        NotImplementedError
+
+    def test_put_entry_add_entry(self):
        NotImplementedError
        # cli = CommandLineInterface()
        # Need to implement man

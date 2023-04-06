@@ -63,16 +63,16 @@ def put_entry(flashcardContext: FlashcardContext, word: str, definition: str):
     '''
 
     setsOfFlashcards = flashcardContext.setsOfFlashcards
-    setIdxOfSetToAddIn = find_set_idx_of_entry(flashcardContext, word)
-    flashcard_set = setsOfFlashcards[setIdxOfSetToAddIn]
+    idxOfSetToAddIn = find_set_idx_of_entry(flashcardContext, word)
+    flashcardSet = setsOfFlashcards[idxOfSetToAddIn]
 
-    if setIdxOfSetToAddIn != -1:
-        flashcard_set[word] = definition
-        write_set_to_store(flashcardContext, flashcard_set, setIdxOfSetToAddIn)
+    if idxOfSetToAddIn != -1:
+        flashcardSet[word] = definition
+        write_set_to_store(flashcardContext, flashcardSet, idxOfSetToAddIn)
         return 0
 
     else:
-        if len(flashcard_set) == 10:
+        if len(flashcardSet) == 10:
             setsOfFlashcards.append(dict())
             update_current_state(flashcardContext)
 
