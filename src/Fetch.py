@@ -18,7 +18,6 @@ def get_entries_from_csv_file(flashcardContext: FlashcardContext, csvfile: typin
 
 
     for entry in content:
-        put
         NotImplementedError
         #Load entry into sets_of_flashcards in flashcardContext
 
