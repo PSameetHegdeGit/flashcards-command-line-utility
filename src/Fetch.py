@@ -1,28 +1,19 @@
 import csv
 import typing
 from CommandLineInterface import *
-
-
-'''
-File lists functions that grab entries from a source 
-
-'''
-
-
-def get_entries_from_csv_file(flashcardContext: FlashcardContext, csvfile: typing.IO):
-
-    content = csv.reader(csvfile)
-
-    #create sets_of_flashcards and merge sets_of_flashcards into flashcardContext?
+import random
 
 
 
-    for entry in content:
-        NotImplementedError
-        #Load entry into sets_of_flashcards in flashcardContext
+def get_entries_from_csv_file(csvfile: typing.IO):
+
+    return [Entry(row[0], row[1]) for row in csv.reader(csvfile)]
 
 
 
 
-
+class Entry:
+    def __init__(self, word: str, definition: str):
+        self.word = word
+        self.definition = definition
 
