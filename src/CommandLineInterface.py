@@ -70,8 +70,7 @@ def put_entry(flashcardContext: FlashcardContext, word: str, definition: str):
 
     if idxOfSetToAddIn != -1:
         flashcardSet[word] = definition
-        write_set_to_store(flashcardContext, flashcardSet, idxOfSetToAddIn)
-        return 0
+        return write_set_to_store(flashcardContext, flashcardSet, idxOfSetToAddIn)
 
     else:
         if len(flashcardSet) == 10:

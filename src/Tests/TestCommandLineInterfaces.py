@@ -1,17 +1,34 @@
 import unittest
-from src.CommandLineInterface import *
+from unittest.mock import Mock, patch
+from CommandLineInterface import *
+from Storage import *
 
 class TestCommandLineInterfaces(unittest.TestCase):
 
 
-    def setup(self):
-        flashcardContext = FlashcardContext()
+    #Mock FlashcardContext
+    def setUp(self):
+        self.mock_flashcard_context = patch('Storage.FlashcardContext').start()
+        self.flashcard_context = self.mock_flashcard_context.return_value
 
-    def test_put_entry_add_entry(self):
-       NotImplementedError
-       # cli = CommandLineInterface()
-       # Need to implement man
+        self.flashcard_context.noOfFlashcards = 1
+        self.flashcard_context.setsOfFlashcards = [{'word1': 'definition1'}]
 
-    def test_removeEntry(self):
-        NotImplementedError
+    def tearDown(self) -> None:
+        self.mock_flashcard_context.stop()
+
+    @patch('CommandLineInterface.find_set_idx_of_entry')
+    @patch('Storage.write_set_to_store')
+    @patch('CommandLineInterface.update_current_state')
+    @patch('CommandLineInterface.append_entry_to_set')
+    def test_put_entry_add_entry(self, mock_append_entry, mock_update_state, mock_write_store, mock_find_idx):
+        mock_find_idx.return_value = 0
+        mock_write_store.return_value = "ADDED ENTRY"
+        mock_update_state.return_value = "UPDATED STATE"
+        mock_append_entry.return_value = "APPENDED ENTRY"
+
+        result = put_entry(self.mock_flashcard_context, 'word', 'definition')
+
+        self.assertEqual(result, "ADDED ENTRY")
+
 
