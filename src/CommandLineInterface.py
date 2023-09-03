@@ -13,6 +13,8 @@ def start():
 
     flashcardContext = FlashcardContext()
 
+    ## Set Flashcard configuration
+
     # if input("would you like a quiz?\n") == "yes":
     #     quiz(flashcardContext, 30)
 

@@ -5,7 +5,7 @@ class TestCommandLineInterfaces(unittest.TestCase):
 
 
     def setup(self):
-        NotImplementedError
+        flashcardContext = FlashcardContext()
 
     def test_put_entry_add_entry(self):
        NotImplementedError

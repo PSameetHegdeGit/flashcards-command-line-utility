@@ -5,17 +5,19 @@ File lists functions and classes that interact with storage
 
 '''
 
-
-
 class FlashcardContext:
 
-
-    def __init__(self, directory='/Users/rajee/.Flashcards'):
+    def __init__(self, directory='%USERPROFILE%/.Flashcards'):
         '''
-        Read current_state.txt for no_of_flashcards and counter; set directory to '' to get empty context
-        :return: IDK
+        Represents the current directory where flashcards and metadata is stored
+
+        :param directory: path to flashcard directory; defaults to %USERPROFILE%/.Flashcards; set to '' for testing
+        :param noOfFlashcards: total number of flashcards across all sets
+        :param day: day we are inputting flashcards in
+        :param setsOfFlashcards: sets of 10 flashcards (except last flashcard set)
         '''
 
+        # don't save state
         if directory == '':
             self.noOfFlashcards = 0
             self.setsOfFlashcards = [dict()]
@@ -26,6 +28,7 @@ class FlashcardContext:
             if not os.path.isdir(directory):
                 os.mkdir(directory)
 
+            # create metadata for flashcard store
             if not os.path.isfile(f"{directory}/current_state.txt"):
                 open(f"{directory}/current_state.txt", "x")
 

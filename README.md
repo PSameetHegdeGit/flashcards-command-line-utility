@@ -5,7 +5,7 @@
 
 I'm currently prepping for the GRE as a requirement for MSCS programs. As a part of my prep work, I was using Quizlet to memorize vocab words. 
 While I enjoyed some of the features on Quizlet, I wanted to use study strategies that were tough to implement in the free tier of the Quizlet
-app. I decided to instead build a small tool for the command line to make and review flashcards.
+app. I decided to instead build a small tool for command lines to make and review flashcards.
 
 ## Features
 

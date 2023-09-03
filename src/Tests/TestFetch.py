@@ -1,5 +1,5 @@
 import unittest
-from src.Fetch import *
+from src.Entry import *
 
 class TestFetch(unittest.TestCase):
 
