@@ -12,7 +12,7 @@ class Entry:
 
 def get_entries_from_csv_file(csvfile: typing.IO):
 
-    return [Entry(row[0], row[1]) for row in csv.reader(csvfile)]
+    return {row[0]: row[1] for row in csv.reader(csvfile)}
 
 
 def get_random_set(entries: list[Entry]):

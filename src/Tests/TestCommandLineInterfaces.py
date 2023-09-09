@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch
-from CommandLineInterface import *
-from Storage import *
+from src.CommandLineInterface import *
+from src.Storage import *
 
 class TestCommandLineInterfaces(unittest.TestCase):
 
