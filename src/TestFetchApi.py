@@ -50,5 +50,16 @@ class TestFetchApi(unittest.TestCase):
         self.csvfile.close()
         #using relative path
         self.delete_all_csv_files_in_dir("")
+
     def test_integration_create_entries_from_csv_file(self):
-        print(get_entries_from_csv_file(self.csvfile))
+
+        expected = {'word': 'definition',
+                    'happy': 'feeling or showing pleasure',
+                    'sad': 'feeling or showing sorrow',
+                    'excited': 'very enthusiastic and eager'}
+
+        actual = get_entries_from_csv_file(self.csvfile)
+
+        self.assertEqual(expected, actual)
+
+
