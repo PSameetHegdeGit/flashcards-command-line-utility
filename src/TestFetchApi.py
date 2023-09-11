@@ -1,5 +1,5 @@
 import unittest
-from FetchApi import *
+from FlashcardApi import *
 import csv
 import os
 import glob

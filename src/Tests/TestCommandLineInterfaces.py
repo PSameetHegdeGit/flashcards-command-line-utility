@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import Mock, patch
 from src.CommandLineInterface import *
-from src.Storage import *
+from src.FlashcardContext import *
 
 class TestCommandLineInterfaces(unittest.TestCase):
 
@@ -11,8 +11,8 @@ class TestCommandLineInterfaces(unittest.TestCase):
         self.mock_flashcard_context = patch('Storage.FlashcardContext').start()
         self.flashcard_context = self.mock_flashcard_context.return_value
 
-        self.flashcard_context.noOfFlashcards = 1
-        self.flashcard_context.setsOfFlashcards = [{'word1': 'definition1'}]
+        self.flashcard_context.no_of_flashcards = 1
+        self.flashcard_context.sets_of_flashcards = [{'word1': 'definition1'}]
 
     def tearDown(self) -> None:
         self.mock_flashcard_context.stop()

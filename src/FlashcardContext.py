@@ -19,8 +19,8 @@ class FlashcardContext:
 
         # don't save state
         if directory == '':
-            self.noOfFlashcards = 0
-            self.setsOfFlashcards = [dict()]
+            self.no_of_flashcards = 0
+            self.sets_of_flashcards = [dict()]
         else:
 
             self.directory = directory
@@ -43,10 +43,10 @@ class FlashcardContext:
             with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
                 current_state = map(lambda x: x.split(':'),  currentStatePtr.readlines())
                 current_state = list(map(lambda x: {x[0]: x[1].strip()}, current_state))
-                self.noOfFlashcards = int(current_state[0]['no_of_flashcards'])
+                self.no_of_flashcards = int(current_state[0]['no_of_flashcards'])
                 self.day = int(current_state[1]['day'])
 
-            self.setsOfFlashcards = self.populate_flashcards(self.noOfFlashcards)
+            self.sets_of_flashcards = self.populate_flashcards(self.no_of_flashcards)
 
     def populate_flashcards(self, no_of_flashcards: int):
         '''
@@ -77,59 +77,49 @@ class FlashcardContext:
 
         return sets_of_flashcards
 
-def write_set_to_store(flashcardContext: FlashcardContext, flashcardSet: dict, flashcardIdx: int):
-    '''
-    writes a flashcard set to its corresponding txt file under .Flashcards.
-    Flashcard sets are ordered by when created. Will always be in that order
+    def write_set_to_store(self, flashcardSet: dict, flashcardIdx: int):
+        '''
+        writes a flashcard set to its corresponding txt file under .Flashcards.
+        Flashcard sets are ordered by when created. Will always be in that order
 
-    :param flashcardSet: key value pairing corresponding to txt file
-    :param flashcard_idx: IDK
-    :return: None
-    '''
+        :param flashcardSet: key value pairing corresponding to txt file
+        :param flashcard_idx: IDK
+        :return: None
+        '''
 
-    with open(fr"{flashcardContext.directory}/flashcardset_{flashcardIdx}", 'w') as set_ptr:
-        for word, definition in flashcardSet.items():
+        with open(fr"{self.directory}/flashcardset_{flashcardIdx}", 'w') as set_ptr:
+            for word, definition in flashcardSet.items():
+                set_ptr.write(f"{word}:{definition}\n")
+
+
+    def append_entry_to_set(self, flashcardIdx: int, word: str, definition: str):
+        '''
+        append entry to the file corresponding to a flashcard set
+
+        :param flashcard_idx: set position
+        :param word
+        :param definition
+        :return: None
+        '''
+
+        with open(fr"{self.directory}/flashcardset_{flashcardIdx}", 'a') as set_ptr:
             set_ptr.write(f"{word}:{definition}\n")
 
 
-def append_entry_to_set(flashcardContext: FlashcardContext, flashcardIdx: int, word: str, definition: str):
-    '''
-    append entry to the file corresponding to a flashcard set
+    def update_current_state(self):
+        '''
+        Updates current_state.txt
 
-    :param flashcard_idx: set position
-    :param word
-    :param definition
-    :return: None
-    '''
+        :return: None
+        '''
 
-    with open(fr"{flashcardContext.directory}/flashcardset_{flashcardIdx}", 'a') as set_ptr:
-        set_ptr.write(f"{word}:{definition}\n")
+        noOfFlashcards = len(self.sets_of_flashcards)
+        day = self.day
 
-
-def update_current_state(flashcardContext: FlashcardContext):
-    '''
-    Updates current_state.txt
-
-    :return: None
-    '''
-
-    noOfFlashcards = len(flashcardContext.setsOfFlashcards)
-    day = flashcardContext.day
-
-    with open(f"{flashcardContext.directory}/current_state.txt", 'w') as current_state_ptr:
-        current_state_ptr.write(f"no_of_flashcards:{noOfFlashcards}\n")
-        current_state_ptr.write(f"day:{day}")
+        with open(f"{self.directory}/current_state.txt", 'w') as current_state_ptr:
+            current_state_ptr.write(f"no_of_flashcards:{noOfFlashcards}\n")
+            current_state_ptr.write(f"day:{day}")
 
 
-def exit_flashcard_app(flashcardContext: FlashcardContext):
-
-    noOfFlashcards = len(flashcardContext.setsOfFlashcards)
-    day = flashcardContext.day + 1
-
-    with open(f"{flashcardContext.directory}/current_state.txt", 'w') as current_state_ptr:
-        current_state_ptr.write(f"no_of_flashcards:{noOfFlashcards}\n")
-        current_state_ptr.write(f"day:{day}")
-
-    exit()
 
 
