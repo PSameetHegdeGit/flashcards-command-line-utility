@@ -1,4 +1,6 @@
 import os
+import json
+from Metadata import *
 
 '''
 File lists functions and classes that interact with storage 
@@ -7,6 +9,7 @@ File lists functions and classes that interact with storage
 
 class FlashcardContext:
 
+    #Todo: Find better ways to organize attributes; Do I load config to a class?
     def __init__(self, directory='%USERPROFILE%/.Flashcards'):
         '''
         Represents the current directory where flashcards and metadata is stored
@@ -28,24 +31,17 @@ class FlashcardContext:
 
             self.directory = directory
 
-            ## initialize directory
+            ## initialize directory if directory doesn't exist
             if not os.path.isdir(directory):
                 os.mkdir(directory)
 
-            # create metadata for flashcard store
-            if not os.path.isfile(f"{directory}/current_state.txt"):
-                open(f"{directory}/current_state.txt", "x")
+            if not os.path.isfile(f"{directory}/metadata.json"):
+                self.generate_metadata_folder(directory)
 
-            # set current state if nothing exists in current state
-            with open(fr"{directory}/current_state.txt", "r+") as currentStatePtr:
-                if os.path.getsize(f"{directory}/current_state.txt") == 0:
-                    # indicates fresh flashcard db
-                    currentStatePtr.write("no_of_flashcards:0\n")
-                    currentStatePtr.write("day:0")
-
-
-            with open(fr"{directory}/current_state.txt", "r") as currentStatePtr:
-                current_state = map(lambda x: x.split(':'),  currentStatePtr.readlines())
+            #TODO: load metadata into file
+            with open(fr"{directory}/metadata.json", "r") as metadata_ptr:
+                metadata = json.loads(metadata_ptr.read())
+                current_state = map(lambda x: x.split(':'),  metadata.readlines())
                 current_state = list(map(lambda x: {x[0]: x[1].strip()}, current_state))
                 self.no_of_flashcards = int(current_state[0]['no_of_flashcards'])
                 self.day = int(current_state[1]['day'])
@@ -53,7 +49,29 @@ class FlashcardContext:
             self.sets_of_flashcards = self.populate_flashcards(self.no_of_flashcards)
 
 
-    def generate_metadata_folder(self):
+    def generate_metadata_folder(self, directory):
+        '''
+        Generates a metadata folder in specified path
+
+        :param directory: path to directory
+        '''
+
+        metadata = {
+            "dump_file": {
+                "path_to_dump": f"{directory}/dump_file.txt",
+                "line_pointer": 0
+            },
+            "flashcards": {
+                "path_to_flashcards": f"{directory}/.Flashcards/",
+                "no_of_flashcards": 0,
+                "review_cycle": 5,
+            }
+        }
+
+        with open(f"{directory}/metadata.json", "x") as metadata_ptr:
+            json.dump(metadata, metadata_ptr)
+
+
 
     def populate_flashcards(self, no_of_flashcards: int):
         '''
