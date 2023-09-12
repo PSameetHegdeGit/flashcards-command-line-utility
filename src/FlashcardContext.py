@@ -12,9 +12,12 @@ class FlashcardContext:
         Represents the current directory where flashcards and metadata is stored
 
         :param directory: path to flashcard directory; defaults to %USERPROFILE%/.Flashcards; set to '' for testing
-        :param noOfFlashcards: total number of flashcards across all sets
-        :param day: day we are inputting flashcards in
-        :param setsOfFlashcards: sets of 10 flashcards (except last flashcard set)
+
+        Attributes:
+
+        noOfFlashcards: total number of flashcards across all sets
+        day: day we are inputting flashcards in
+        setsOfFlashcards: sets of 10 flashcards (except last flashcard set)
         '''
 
         # don't save state
@@ -25,6 +28,7 @@ class FlashcardContext:
 
             self.directory = directory
 
+            ## initialize directory
             if not os.path.isdir(directory):
                 os.mkdir(directory)
 
@@ -47,6 +51,9 @@ class FlashcardContext:
                 self.day = int(current_state[1]['day'])
 
             self.sets_of_flashcards = self.populate_flashcards(self.no_of_flashcards)
+
+
+    def generate_metadata_folder(self):
 
     def populate_flashcards(self, no_of_flashcards: int):
         '''

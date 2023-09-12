@@ -4,7 +4,7 @@ import csv
 import os
 import glob
 
-class TestFetchApi(unittest.TestCase):
+class TestFlashcardCsvManager(unittest.TestCase):
 
 
     def create_csv_test_file(self, filepath):
@@ -41,9 +41,12 @@ class TestFetchApi(unittest.TestCase):
 
     def setUp(self):
         csv_file_path = "test.csv"
-
         self.create_csv_test_file(csv_file_path)
         self.csvfile = open(csv_file_path)
+
+        self.flashcardCsvManager = FlashcardCsvManager
+
+
 
 
     def tearDown(self) -> None:
@@ -58,7 +61,7 @@ class TestFetchApi(unittest.TestCase):
                     'sad': 'feeling or showing sorrow',
                     'excited': 'very enthusiastic and eager'}
 
-        actual = get_entries_from_csv_file(self.csvfile)
+        actual = self.flashcardCsvManager.get_entries_from_csv_file(self.csvfile)
 
         self.assertEqual(expected, actual)
 

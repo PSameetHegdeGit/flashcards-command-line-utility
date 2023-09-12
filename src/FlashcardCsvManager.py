@@ -2,6 +2,8 @@ import csv
 import typing
 import random
 class FlashcardCsvManager():
+
+    #Todo: replace entry with named tuple
     class Entry:
         def __init__(self, word: str, definition: str):
             self.word = word
