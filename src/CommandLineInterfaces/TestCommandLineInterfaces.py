@@ -1,7 +1,6 @@
 import unittest
-from unittest.mock import Mock, patch
-from src.CommandLineInterface import *
-from src.FlashcardContext import *
+from unittest.mock import patch
+
 
 class TestCommandLineInterfaces(unittest.TestCase):
 

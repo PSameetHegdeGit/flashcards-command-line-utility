@@ -1,5 +1,5 @@
-from FlashcardContext import *
-from FlashcardCsvManager import *
+from src.FlashcardContexts.FlashcardContext import *
+from src.FlashcardCsv.FlashcardCsvManager import *
 
 class FlashcardApi:
     # Todo: determine better way to pass status codes

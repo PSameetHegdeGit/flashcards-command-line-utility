@@ -1,5 +1,3 @@
-from FlashcardContext import *
-import random
 from FlashcardApi import *
 
 

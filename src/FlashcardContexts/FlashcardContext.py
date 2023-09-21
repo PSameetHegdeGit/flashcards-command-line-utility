@@ -10,11 +10,11 @@ File lists functions and classes that interact with storage
 class FlashcardContext:
 
     #Todo: Find better ways to organize attributes; Do I load config to a class?
-    def __init__(self, directory='%USERPROFILE%/.Flashcards'):
+    def __init__(self, directory='%USERPROFILE%/.FlashcardContexts'):
         '''
         Represents the current directory where flashcards and metadata is stored
 
-        :param directory: path to flashcard directory; defaults to %USERPROFILE%/.Flashcards; set to '' for testing
+        :param directory: path to flashcard directory; defaults to %USERPROFILE%/.FlashcardContexts; set to '' for testing
 
         Attributes:
 
@@ -23,12 +23,10 @@ class FlashcardContext:
         setsOfFlashcards: sets of 10 flashcards (except last flashcard set)
         '''
 
-        # don't save state
         if directory == '':
             self.no_of_flashcards = 0
             self.sets_of_flashcards = [dict()]
         else:
-
             self.directory = directory
 
             ## initialize directory if directory doesn't exist
@@ -62,7 +60,7 @@ class FlashcardContext:
                 "line_pointer": 0
             },
             "flashcards": {
-                "path_to_flashcards": f"{directory}/.Flashcards/",
+                "path_to_flashcards": f"{directory}/.FlashcardContexts/",
                 "no_of_flashcards": 0,
                 "review_cycle": 5,
             }
@@ -104,7 +102,7 @@ class FlashcardContext:
 
     def write_set_to_store(self, flashcardSet: dict, flashcardIdx: int):
         '''
-        writes a flashcard set to its corresponding txt file under .Flashcards.
+        writes a flashcard set to its corresponding txt file under .FlashcardContexts.
         Flashcard sets are ordered by when created. Will always be in that order
 
         :param flashcardSet: key value pairing corresponding to txt file
