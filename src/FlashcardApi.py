@@ -1,4 +1,4 @@
-from src.FlashcardContexts.FlashcardContext import *
+from src.FlashcardContexts.FlashcardContextManager import *
 from src.FlashcardCsv.FlashcardCsvManager import *
 
 class FlashcardApi:
@@ -58,7 +58,7 @@ class FlashcardApi:
 
         return -1
 
-    def close_flashcard_app(flashcardContext: FlashcardContext):
+    def close_flashcard_app(flashcardContext: FlashcardContextManager):
 
         noOfFlashcards = len(flashcardContext.sets_of_flashcards)
         day = flashcardContext.day + 1
