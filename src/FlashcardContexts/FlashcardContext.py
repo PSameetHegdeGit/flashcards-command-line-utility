@@ -28,23 +28,26 @@ class FlashcardContext:
         if not os.path.isfile(f"{directory}/metadata.json"):
             self.generate_metadata_folder(directory)
 
-        path_to_flashcards = f"{directory}/flashcards"
-        path_to_dump = f"{directory}/dump_file"
+        self.path_to_flashcards = f"{directory}/flashcards"
+        self.path_to_dump = f"{directory}/dump_file"
 
         ## if flashcard directory doesn't exist, create it
-        if not os.path.isdir(path_to_flashcards):
-            os.mkdir(path_to_flashcards)
+        if not os.path.isdir(self.path_to_flashcards):
+            os.mkdir(self.path_to_flashcards)
 
         ## if dump directory doesn't exist, create it
-        if not os.path.isdir(path_to_dump):
-            os.mkdir(path_to_dump)
+        if not os.path.isdir(self.path_to_dump):
+            os.mkdir(self.path_to_dump)
 
-        #get values from metadata
+        ## get values from metadata
         with open(fr"{directory}/metadata.json", "r") as metadata_ptr:
             metadata = json.loads(metadata_ptr.read())
             self.no_of_flashcards = int(metadata["flashcards"]["no_of_flashcards"])
             self.review_cycle = int(metadata["flashcards"]["review_cycle"])
             self.line_pointer = int(metadata["dump_file"]["line_pointer"])
+
+        ## create array of dictionaries for sets of flashcards
+        self.sets_of_flashcards = self.populate_flashcards(self.no_of_flashcards)
 
     def generate_metadata_folder(self, directory):
         '''
@@ -67,5 +70,34 @@ class FlashcardContext:
 
         with open(f"{directory}/metadata.json", "x") as metadata_ptr:
             json.dump(metadata, metadata_ptr)
+
+    def populate_flashcards(self, no_of_flashcards: int):
+        '''
+        reads all flashcard files when a valid directory is specified (i.e. not '') and initializes sets_of_flashcards (represented as an array of
+        dictionaries) to those flashcards
+
+        :param no_of_flashcards:
+        :return: a list of the sets of flashcards
+        '''
+
+        sets_of_flashcards = []
+
+        if no_of_flashcards == 0:
+            sets_of_flashcards.append(dict())
+        else:
+            for i in range(no_of_flashcards):
+
+                if not os.path.isfile(f"{self.}/flashcardset_{i}"):
+                    open(f"{self.path_to_flashcards}/flashcardset_{i}", "x")
+
+                with open(fr"{self.path_to_flashcards}/flashcardset_{i}", 'r') as flashcard_ptr:
+                    flashcard_set = flashcard_ptr.readlines()
+                    fl = {}
+                    for flashcard in flashcard_set:
+                        a, b = flashcard.split(':')
+                        fl[a] = b.strip()
+                    sets_of_flashcards.append(fl)
+
+        return sets_of_flashcards
 
 

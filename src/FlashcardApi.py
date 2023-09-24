@@ -18,21 +18,23 @@ class FlashcardApi:
         :return: None
         '''
 
-        setsOfFlashcards = self.flashcard_context.no_of_flashcards
-        idxOfSetToAddIn = self.find_set_idx_of_entry(word)
-        flashcardSet = setsOfFlashcards[idxOfSetToAddIn]
+        sets_of_flashcards = self.flashcard_context.sets_of_flashcards
+        idx_of_set_to_add_in = self.find_set_idx_of_entry(word)
+        flashcard_set = sets_of_flashcards[idx_of_set_to_add_in]
 
-        if idxOfSetToAddIn != -1:
-            flashcardSet[word] = definition
-            return self.write_set_to_store(flashcardSet, idxOfSetToAddIn)
+        ## update word
+        if idx_of_set_to_add_in != -1:
+            flashcard_set[word] = definition
+            return self.write_set_to_store(flashcard_set, idx_of_set_to_add_in)
 
+        ## add word
         else:
-            if len(flashcardSet) == 10:
-                setsOfFlashcards.append(dict())
+            if len(flashcard_set) == 10:
+                sets_of_flashcards.append(dict())
                 self.update_current_state()
 
-            setsOfFlashcards[-1][word] = definition
-            self.append_entry_to_set(len(setsOfFlashcards) - 1, word, definition)
+            sets_of_flashcards[-1][word] = definition
+            self.append_entry_to_set(len(sets_of_flashcards) - 1, word, definition)
             return 1
 
     def delete_entry(self, word: str):
@@ -40,9 +42,7 @@ class FlashcardApi:
 
     def list_entries(self):
 
-        sets_of_flashcards = self.sets_of_flashcards
-
-        for flashcard_set in sets_of_flashcards:
+        for flashcard_set in self.flashcard_context.sets_of_flashcards:
             for word, definition in flashcard_set.items():
                 print(f"{word} : {definition}")
 
@@ -54,44 +54,13 @@ class FlashcardApi:
         :return: set idx if word exists; -1 if does not exist
         '''
 
-        sets_of_flashcards = self.sets_of_flashcards
-
-        for idx, flashcard_set in enumerate(sets_of_flashcards):
+        for idx, flashcard_set in enumerate(self.flashcard_context.sets_of_flashcards):
             if word in flashcard_set:
                 return idx
 
         return -1
 
     ######  Disk Interface for Flashcard Context  ######
-
-    def populate_flashcards(self, no_of_flashcards: int):
-        '''
-        reads all flashcard files when a valid directory is specified (i.e. not '') and initializes sets_of_flashcards (represented as an array of
-        dictionaries) to those flashcards
-
-        :param no_of_flashcards:
-        :return: a list of the sets of flashcards
-        '''
-
-        sets_of_flashcards = []
-
-        if no_of_flashcards == 0:
-            sets_of_flashcards.append(dict())
-        else:
-            for i in range(no_of_flashcards):
-
-                if not os.path.isfile(f"{self.directory}/flashcardset_{i}"):
-                    open(f"{self.directory}/flashcardset_{i}", "x")
-
-                with open(fr"{self.directory}/flashcardset_{i}", 'r') as flashcard_ptr:
-                    flashcard_set = flashcard_ptr.readlines()
-                    fl = {}
-                    for flashcard in flashcard_set:
-                        a, b = flashcard.split(':')
-                        fl[a] = b.strip()
-                    sets_of_flashcards.append(fl)
-
-        return sets_of_flashcards
 
 
     def write_set_to_store(self, flashcardSet: dict, flashcardIdx: int):
@@ -104,7 +73,7 @@ class FlashcardApi:
         :return: None
         '''
 
-        with open(fr"{self.directory}/flashcardset_{flashcardIdx}", 'w') as set_ptr:
+        with open(fr"{self.flashcard_context.path_to_flashcards}/flashcardset_{flashcardIdx}", 'w') as set_ptr:
             for word, definition in flashcardSet.items():
                 set_ptr.write(f"{word}:{definition}\n")
 
@@ -118,7 +87,7 @@ class FlashcardApi:
         :return: None
         '''
 
-        with open(fr"{self.directory}/flashcardset_{flashcardIdx}", 'a') as set_ptr:
+        with open(fr"{self.flashcard_context.path_to_flashcards}/flashcardset_{flashcardIdx}", 'a') as set_ptr:
             set_ptr.write(f"{word}:{definition}\n")
 
     def update_current_state(self):
@@ -128,7 +97,7 @@ class FlashcardApi:
         :return: None
         '''
 
-        noOfFlashcards = len(self.sets_of_flashcards)
+        noOfFlashcards = len(self.flashcard_context.sets_of_flashcards)
         day = self.day
 
         with open(f"{self.directory}/current_state.txt", 'w') as current_state_ptr:
