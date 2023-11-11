@@ -17,5 +17,5 @@ TODO 2/21/22
 (7) Track progress and adapt (i.e if I miss 2 days, ask for 20 vocab words then up till 30)
 (8) add CSV parser and PDF Parser?
 (9) Enable adding DB of potential words to select from, and auto generate words  
-(10) DONE ~ put .FlashcardContexts config under ~/
+(10) DONE ~ put .FlashcardCollection config under ~/
 '''

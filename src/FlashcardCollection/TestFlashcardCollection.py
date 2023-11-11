@@ -1,5 +1,5 @@
 import unittest
-from FlashcardContext import *
+from FlashcardCollection import *
 
 class TestFlashcardContext(unittest.TestCase):
 
@@ -17,12 +17,10 @@ class TestFlashcardContext(unittest.TestCase):
             }
         }
 
-        new = FlashcardContext()
+        new = FlashcardCollection()
 
 
 
 
 
 
-    
-   # def test_

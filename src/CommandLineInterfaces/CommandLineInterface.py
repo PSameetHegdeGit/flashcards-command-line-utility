@@ -1,5 +1,5 @@
-from FlashcardApi import *
-
+from src.FlashcardApi import *
+from src.FlashcardCollection import FlashcardCollection
 
 '''
 File lists functions that interact with command line and any helper functions associated with those functions  
@@ -7,7 +7,11 @@ File lists functions that interact with command line and any helper functions as
 
 def start():
 
-    flashcards = FlashcardApi(FlashcardContext())
+
+
+
+
+    flashcards = FlashcardApi(FlashcardCollection())
 
     default_mode = "10_per_day"
 
@@ -76,8 +80,8 @@ def mode_10_per_day(flashcards: FlashcardApi):
     :return: None
     '''
 
-    day = flashcards.flashcard_context.day
-    sets_of_flashcards = flashcards.flashcard_context.sets_of_flashcards
+    day = flashcards.flashcard_collection.day
+    sets_of_flashcards = flashcards.flashcard_collection.sets_of_flashcards
     place = day % 5
 
     # check current_state.txt to see what day we are on
@@ -88,7 +92,7 @@ def mode_10_per_day(flashcards: FlashcardApi):
         if get_entry_from_input_stream(flashcards) == 1:
             new_entry_ctr += 1
 
-    print(flashcards.flashcard_context.sets_of_flashcards)
+    print(flashcards.flashcard_collection.sets_of_flashcards)
 
     try:
         if place == 0:
